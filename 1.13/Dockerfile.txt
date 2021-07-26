@@ -1,0 +1,11 @@
+FROM golang:1.17rc1
+
+EXPOSE 8080
+
+WORKDIR /usr/src/app
+
+COPY . /usr/src/app
+
+RUN go build
+
+CMD ["./server"]
