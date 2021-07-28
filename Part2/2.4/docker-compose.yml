@@ -4,6 +4,8 @@ services:
   backend:
       image: example-backend
       build: .
+      environment:
+        - REDIS_HOST=6379
       ports:
         - 8080:8080
       command: ["./server", "curl http://"]
@@ -16,3 +18,9 @@ services:
         - 5000:5000
       command: ["serve", "-s", "-l", "5000", "build"]
       container_name: frontend
+
+  redis:
+      image: redis
+      build: .
+      ports:
+       - 6379
