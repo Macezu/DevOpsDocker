@@ -5,22 +5,27 @@ services:
       image: example-backend
       build: .
       environment:
-        - REDIS_HOST=6379
+        - REDIS_HOST=redis
       ports:
         - 8080:8080
-      command: ["./server", "curl http://"]
+      command: ["./server"]
       container_name: backend
 
   frontend:
       image: example-frontend
       build: .
+      environment:
+        - REACT_APP_BACKEND_URL=http://localhost:8080
       ports:
         - 5000:5000
       command: ["serve", "-s", "-l", "5000", "build"]
       container_name: frontend
 
-  redis:
+    redis:  
       image: redis
-      build: .
-      ports:
-       - 6379
+      build: . 
+      ports: 
+        - 6379:6379
+      command: ["redis-server"]
+      restart: unless-stopped
+      container_name: redis
