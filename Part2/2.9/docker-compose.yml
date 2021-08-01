@@ -32,7 +32,6 @@ services:
         - POSTGRES_HOST=postgres
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
-#        - REQUEST_ORIGIN=http://localhost:5000
       command: ["./server"]
       container_name: backend
 
