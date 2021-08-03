@@ -1,0 +1,19 @@
+version: "3"
+services:
+  dockenizer-app:
+    build: .
+    environment:
+        - REPO=${REPO}
+        - IMAGE=${IMAGE}
+        - BRANCH=${BRANCH}
+    volumes:
+      - ./:/app
+    container_name: dockenizer-app
+
+  watchtower:
+    image: containrrr/watchtower
+    environment:
+        -  WATCHTOWER_POLL_INTERVAL=60 # Poll every 60 seconds
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    container_name: watchtower
