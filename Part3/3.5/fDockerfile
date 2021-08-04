@@ -8,11 +8,12 @@ COPY . .
 
 ENV REACT_APP_BACKEND_URL=http://localhost:8080
 
-RUN /bin/sh -c npm install \
-    && npm install -g serve \
+RUN npm install && npm install -g serve \
     && npm run build      \
+    # Remove development dependencies
     && npm prune --production
 
+# All the official Node.js images have a Linux user added in the upstream image called node.
 USER node
 
 CMD ["serve" "-s" "-l" "5000" "build"]
