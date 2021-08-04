@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:12-alpine
 
 EXPOSE 5000
 
@@ -6,10 +6,13 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm install && npm install -g serve
-
 ENV REACT_APP_BACKEND_URL=http://localhost:8080
 
-RUN npm run build 
+RUN /bin/sh -c npm install \
+    && npm install -g serve \
+    && npm run build      \
+    && npm prune --production
 
-CMD ["serve", "-s", "-l", "5000", "build"]
+USER node
+
+CMD ["serve" "-s" "-l" "5000" "build"]
