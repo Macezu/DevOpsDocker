@@ -18,6 +18,6 @@ _Initial_
   example-frontend   latest       54f722f6fcd0   9 seconds ago        1.17GB  
   9e99d99b68ba   48 seconds ago       /bin/sh -c npm install && npm install -g ser…   217MB 
   
-_Final_
+_Final_  
   example-frontend   latest       2ad26bd3ce03   16 seconds ago   315MB  
   741d0ae22f60   About a minute ago   /bin/sh -c npm install && npm install -g ser…   225MB 
