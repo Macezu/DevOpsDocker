@@ -6,10 +6,12 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN apt install nodejs && sudo apt install npm \
-    npm install && npm install -g serve  \
-    npm run build \
-    useradd -m appuser && chown -R appuser:appuser ./build
+RUN apt-get update && apt-get install -y curl \ 
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt install nodejs && sudo apt install npm && npm install && npm install -g serve \
+    && apt-get purge -y --auto-remove curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm run build && useradd -m appuser && chown -R appuser:appuser ./build
 
 ENV REACT_APP_BACKEND_URL=http://localhost:8080
 
