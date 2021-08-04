@@ -9,7 +9,7 @@ _Improved_
  example-backend   latest       08dafa9490d1   46 seconds ago   448MB
  9052f96cc607   16 seconds ago   /bin/sh -c apk add --no-cache build-base  gc…   142MB  
 
-__Final__
+_Final_
 
  example-backend   latest       4f227bbb14b6   33 seconds ago   378MB
  e26303c7e1a2   About a minute ago   /bin/sh -c apk add --no-cache build-base    …   75.7MB 
