@@ -1,0 +1,28 @@
+#Build
+FROM golang:1.13-alpine3.11 AS build
+ 
+WORKDIR /go/src/app
+
+COPY . .
+
+RUN apk add --no-cache build-base \
+    && go build  \
+    && apk del build-base gcc && rm -rf /go/pkg \
+    # reate a "nobody" for the next image by crafting an /etc/passwd
+    && echo "nobody:x:65534:65534:Nobody:/:" > /etc_passwd
+
+
+#Production
+FROM scratch
+
+COPY --from=build /go/src/app/server ./
+
+COPY --from=0 /etc/passwd /etc/passwd
+
+EXPOSE 8080
+
+ENV REQUEST_ORIGIN=http://localhost:5000
+
+User nobody
+
+CMD ["./server"] 
