@@ -1,20 +1,16 @@
 #Build
-FROM golang:1.17rc1 AS build
+FROM golang:1.13-alpine3.11 AS build
+RUN mkdir /build
+ADD *.go /build/
+WORKDIR /build
 
-WORKDIR /usr/src/
-
-RUN go get -d -v golang.org/x/net/html 
-
-COPY app.go ./home
-
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o golang-memtest .
 
 #Production
 FROM scratch
 
-WORKDIR /home
+COPY --from=builder /build/golang-memtest .
 
-COPY --from=build /usr/src/app ./
 EXPOSE 8080
 
 ENV REQUEST_ORIGIN=http://localhost:5000
