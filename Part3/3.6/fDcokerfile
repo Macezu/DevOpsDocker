@@ -1,0 +1,28 @@
+# Build
+FROM node:12-alpine AS build
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm install  \
+    && npm prune --production \
+    && npm run build  
+
+#Production
+FROM alpine:3.13
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/build /usr/src/app/build
+
+EXPOSE 5000
+
+RUN apk add nodejs-current npm --no-cache && npm install -g serve \
+    && rm -rf /var/cache/apk/*
+
+USER node
+
+ENV REACT_APP_BACKEND_URL=http://localhost:8080
+ 
+CMD ["serve", "-s", "-l", "5000", "build"]
