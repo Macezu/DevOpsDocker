@@ -1,0 +1,32 @@
+FROM node:12-alpine AS build
+
+WORKDIR /usr/src/app
+
+EXPOSE 3000
+
+COPY . .
+
+RUN npm install \
+    && npm prune --production \
+    && npm run build
+
+
+# Production
+From alpine:3.14
+
+WORKDIR /usr/src/app
+RUN ls -a
+COPY --from=build /usr/src/app/build /usr/src/app/build
+
+
+RUN apk add nodejs-current npm --no-cache && npm install -g serve \
+    && rm -rf /var/cache/apk/*
+
+# Create a group and user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Tell docker that all future commands should run as the appuser user
+USER appuser
+
+
+CMD ["serve", "-s", "-l", "3000", "build"]
